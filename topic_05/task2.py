@@ -1,50 +1,55 @@
-import requests 
+import requests
 
-def print_cur_n():
-    for elem in nbu_orig.json():
-        print(elem['cc'], " | ", elem['txt'])
+# Функція для отримання актуальних курсів валют з НБУ
+def info():
+    url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json"
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        print("Не вдалося отримати курси валют. Спробуйте пізніше.")
+        return None
+    
+    data = response.json()
+    
+    # Створюємо словник з курсами валют
+    exchange_rates = {}
+    for item in data:
+        if item['cc'] in ['USD', 'EUR', 'PLN']:  # Тільки для цих валют
+            exchange_rates[item['cc']] = item['rate']
+    
+    return exchange_rates
 
-def print_cur_e():
-    for elem in nbu_orig.json():
-        print(elem['cc'], " | ", elem['rate'])
+# Функція для конвертації валюти в гривні
+def convert_currency(amount, currency, exchange_rates):
+    if currency not in exchange_rates:
+        print(f"Курс для валюти {currency} не знайдений.")
+        return None
+    
+    rate = exchange_rates[currency]
+    return amount * rate
 
-def conv():
-    cur_code = (input("Введіть код валюти: ")).upper()
-    cur_val = float(input("Введіть суму валюти: "))
+# Головна функція програми
+def main():
+    # Отримуємо курси валют
+    exchange_rates = info()
+    if not exchange_rates:
+        return
+    
+    print("Доступні валюти для конвертації: EUR, USD, PLN.")
+    currency = input("Введіть валюту, яку хочете конвертувати (EUR, USD, PLN): \n").upper()
+    
+    if currency not in ['EUR', 'USD', 'PLN']:
+        print("Невірна валюта. Доступні лише EUR, USD, PLN.")
+        return
+    
     try:
-        total = cur_val * (nbu[cur_code]["rate"])
-        print(f"{total} UAH")
-    except:
-        print("Неправильно вказано код валюти")
-
-def r_conv():
-    cur_code = (input("Введіть код валюти: ")).upper()
-    cur_val = float(input("Введіть суму UAH: "))
-    try:
-        total = cur_val / (nbu[cur_code]["rate"])
-        print(f"{total} {cur_code}")
-    except:
-        print("Неправильно вказано код валюти")
-
-def action():
-    while True:
-        print("\npn — надрукувати назви валют | pe — роздрукувати курс обміну валют | с — перетворення | rс — зворотне перетворення | ex — вихід із програми")
-        q = input("Select an action: ")
-        match q:
-            case "pn":
-                print_cur_n()
-            case "pe":
-                print_cur_e()
-            case "c":
-                conv()
-            case "rc":
-                r_conv()
-            case "ex":
-                exit(0)
-
-nbu_orig = requests.get("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?json")
-nbu = {}
-for elem in nbu_orig.json():
-    nbu.update({elem['cc'] : elem})
-
-action()
+        amount = float(input("Введіть кількість валютних одиниць: "))
+    except ValueError:
+        print("Некоректне введення кількості.")
+        return
+    
+    # Конвертуємо валюту в гривні
+    result = convert_currency(amount, currency, exchange_rates)
+    
+    if result is not None:
+        print(f"{amount} {currency} дорівнює {result:.2f} гривень.")
