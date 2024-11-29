@@ -26,5 +26,3 @@ def main():
             print("До побачення!")
             break
 
-if __name__ == "__main__":
-    main()
