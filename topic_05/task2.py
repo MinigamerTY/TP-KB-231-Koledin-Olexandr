@@ -53,3 +53,5 @@ def main():
     
     if result is not None:
         print(f"{amount} {currency} дорівнює {result:.2f} гривень.")
+
+main()
