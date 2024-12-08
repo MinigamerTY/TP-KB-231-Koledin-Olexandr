@@ -7,3 +7,4 @@ class Person:
 human = Person("Олександр", 25)
 print(human.name)  
 print(human.age)   
+ 

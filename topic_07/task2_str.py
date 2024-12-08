@@ -9,3 +9,4 @@ class Person:
 # Створення об'єкта
 human = Person("Олександр", 30)
 print(human) 
+ 

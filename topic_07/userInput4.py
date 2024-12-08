@@ -17,3 +17,4 @@ class UserInput:
         print("4 - Ділення")
         operation = input("Ваш вибір: ")
         return operation
+ 

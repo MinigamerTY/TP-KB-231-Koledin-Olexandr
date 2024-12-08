@@ -12,3 +12,4 @@ class Operations:
         if b == 0:
             raise ZeroDivisionError("Помилка: ділення на нуль!")
         return a / b
+ 

@@ -21,3 +21,4 @@ sorted_students = sorted(students, key=lambda student: student.age)
 print("Сортування за віком:")
 for student in sorted_students:
     print(student)
+ 
