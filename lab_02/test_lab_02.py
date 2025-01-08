@@ -96,5 +96,5 @@ class TestStudentList(unittest.TestCase):
         self.assertIn("Test Student", captured_output.getvalue())
 
 
-if __name__ == '__main__':
+
     unittest.main()
