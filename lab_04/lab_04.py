@@ -54,3 +54,4 @@ print(f"Вираз у ЗПН: {postfix}")
 # Обчислюємо результат
 result = evaluate_postfix(postfix)
 print(f"Результат: {result}")
+
